@@ -1,12 +1,19 @@
-import { Canvas } from '@react-three/fiber'
-import { Suspense } from 'react'
-import Loader from '../components/Loader'
-import Island from '../models/Island';
-import Sky from '../models/Sky';
+import { Canvas } from '@react-three/fiber';
+import { Suspense, useState } from 'react';
+import Loader from '../components/Loader';
 import Bird from '../models/Bird';
+import Island from '../models/Island';
 import Plane from '../models/Plane';
+import Sky from '../models/Sky';
+
+{/* <div className='abosollute top-28 left-0 right-0 z-10 flex items-center justify-center'>
+        popup window
+      </div> */}
+
 
 const Home = () => {
+  const [isRotating, setIsRotating] = useState(false);
+
   const adjustIslandForScreenSize = () => {
     let screenScale = null;
     let screenPosition = [0, -6.5, -43];
@@ -23,22 +30,36 @@ const Home = () => {
     return [screenScale, screenPosition, rotation]
   }
 
+  const adjustPlaneForScreenSize = () => {
+    let screenScale, screenPosition;
+
+    if (window.innerWidth < 768) {
+      screenScale = [1.5, 1.5, 1.5];
+      screenPosition = [0, -1.5, 0];
+    } else {
+      screenScale = [3, 3, 3];
+      screenPosition = [0, -4, -4];
+    }
+
+    return [screenScale, screenPosition]
+  }
+
   const [islandScale, islandPosition, islandRotation] = adjustIslandForScreenSize();
+  const [planeScale, planePosition] = adjustPlaneForScreenSize();
+
   return (
     <section className='w-full h-screen relative'>
-      {/* <div className='abosollute top-28 left-0 right-0 z-10 flex items-center justify-center'>
-        popup window
-      </div> */}
-
-      <Canvas className='w-full h-screen bg-transparent' camera={{ near: 0.1, far: 1000 }}>
+      <Canvas
+        className={`w-full h-screen bg-transparent ${isRotating ? 'cursor-grabbing' : 'cursor-grab'}`}
+        camera={{ near: 0.1, far: 1000 }}>
         <Suspense fallback={<Loader />}>
-          <directionalLight position={[10,1,1]} intensity={2}/>
-          <ambientLight intensity={0.5}/>
-          <hemisphereLight skyColor = '#b1e1ff' groundColor='#000000' intensity={1}/>
+          <directionalLight position={[10, 1, 1]} intensity={2} />
+          <ambientLight intensity={0.5} />
+          <hemisphereLight skyColor='#b1e1ff' groundColor='#000000' intensity={1} />
           <Bird />
-          <Plane />
+          <Plane isRotating={isRotating} scale={planeScale} position={planePosition} rotation={[0, 20, 0]} />
           <Sky />
-          <Island position={islandPosition} scale={islandScale} rotation={islandRotation} />
+          <Island position={islandPosition} scale={islandScale} rotation={islandRotation} isRotating={isRotating} setIsRotating={setIsRotating} />
         </Suspense>
       </Canvas>
     </section>
