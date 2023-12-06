@@ -4,18 +4,18 @@ import { About, Contact, Home, Projects } from './pages';
 
 const App = () => {
   return (
-    <BrowserRouter basename="/vite-project">
-      <main className="bg-slate-300/20">
+    <BrowserRouter basename='/vite-project'>
+      <main className='bg-slate-300/20 h-[100vh]'>
         <Navbar />
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/projects" element={<Projects />} />
-          <Route path="/contact" element={<Contact />} />
+          <Route path='/' element={<Home />} />
+          <Route path='/about' element={<About />} />
+          <Route path='/projects' element={<Projects />} />
+          <Route path='/contact' element={<Contact />} />
         </Routes>
       </main>
     </BrowserRouter>
-  )
-}
+  );
+};
 
-export default App
+export default App;
