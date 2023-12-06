@@ -6,5 +6,5 @@ export default defineConfig({
   plugins: [react()],
   assetsInclude: ['**/*.glb'],
   // unhide for deploy in github page
-  base: '/vite-project/',
+  base: '/vite-project',
 });
